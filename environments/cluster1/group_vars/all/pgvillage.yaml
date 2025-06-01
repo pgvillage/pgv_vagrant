@@ -23,11 +23,6 @@ postgresql_ro_port: 5433
 postgresql_rw_port: 5432
 postgresql_proxy_port: 25432
 
-# VIP address
-postgresql_vip_fqdn: "{{ azure_vip_dns_fqdn }}"
-postgresql_vip_ip: "1.2.3.4"
-postgresql_subnet: "24"
-
 # you can tune max_connections. Do note that increased max_connections also means decreased work_mem
 stolon_max_connections: 100
 
@@ -46,4 +41,3 @@ stolon_pg_hba:
   - local all all ident
   - hostssl postgres avchecker samenet cert
   - hostssl all all samenet cert
-  - "hostssl all all {{ azure_vip_ip }}/32 cert"
