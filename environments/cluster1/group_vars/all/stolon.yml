@@ -1,4 +1,7 @@
 ---
+
+stolon_pg_listen_address: "{{ ansible_eth1.ipv4.address }}"
+
 stolon_cluster_name: "{{ cluster_name }}"
 stolon_pg_version: "{{ postgresql_version }}"
 stolon_data_dir: "{{ postgresql_data_mountpoint }}/stolon"
