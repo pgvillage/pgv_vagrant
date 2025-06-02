@@ -15,17 +15,5 @@ avchecker_defaults:
     PGPORT: "{{  postgresql_proxy_port }}"
     PGDATABASE: postgres
     PGSSLMODE: "verify-full"
-  routerrw:
-    AVCHECKER_SLEEPTIME: 5
-    PGHOST: "{{ postgresql_vip_fqdn }}"
-    PGPORT: "{{  postgresql_rw_port }}"
-    PGDATABASE: postgres
-    PGSSLMODE: "verify-full"
-  routerro:
-    AVCHECKER_SLEEPTIME: 5
-    PGHOST: "{{ postgresql_vip_fqdn }}"
-    PGPORT: "{{ postgresql_ro_port }}"
-    PGDATABASE: postgres
-    PGSSLMODE: "verify-full"
 
 avchecker_cert_managed: false
