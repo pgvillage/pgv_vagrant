@@ -1,0 +1,26 @@
+---
+- name: 'Prep the servers'
+  hosts:
+    - hacluster
+    - backup
+    - localhost
+  become: true
+  tasks:
+  - name: Ensure lines in hosts file
+    lineinfile:
+      dest: /etc/hosts
+      regexp: '.*{{ item }}$'
+      line: '{{ hostvars[item].ansible_eth1.ipv4.address }} {{item}}'
+      state: present
+    with_items: '{{ groups["hacluster"] + groups["backup"] }}'
+
+  - name: install chrony
+    package:
+      name: chrony
+      state: present
+
+  - name: Enable and start chrony
+    service:
+      name: chronyd
+      state: started
+      enabled: true
