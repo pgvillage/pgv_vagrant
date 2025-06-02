@@ -2,4 +2,4 @@
 
 firewall_type: firewalld
 firewall_ports:
-  minio: 9091
+  minio: 443
