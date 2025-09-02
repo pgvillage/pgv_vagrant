@@ -30,43 +30,60 @@ Vagrant.configure("2") do |config|
   #end
 
   config.vm.define "ansible" do |ansible|
-    ansible.vm.box = "cloud-image/debian-12"
-    ansible.vm.box_version = "20250428.2096.0"
+    ansible.vm.box = "nibble/rocky-9"
     ansible.vm.hostname = "ansible"
     ansible.vm.network :private_network, ip: "172.30.1.10"
     ansible.vm.provision "shell", inline: <<-SHELL
       rm -rf /etc/ssh/ssh_host_*
       /usr/bin/ssh-keygen -A
+      mkdir -p /vagrant/.ssh ~vagrant/.ssh
+      chown vagrant: ~vagrant/.ssh
+      chmod 0700 ~vagrant/.ssh
+      [ -f /vagrant/.ssh/id_rsa ] || ssh-keygen -f /vagrant/.ssh/id_rsa -N ''
+      [ -f ~vagrant/.ssh/id_rsa ] || cp /vagrant/.ssh/id_rsa* ~vagrant/.ssh/
+      cp /vagrant/.ssh/id_rsa.pub ~vagrant/.ssh/authorized_keys
+      chmod 0600 ~vagrant/.ssh/authorized_keys
+      chown vagrant: ~vagrant/.ssh/authorized_keys
     SHELL
   end
 
   config.vm.define "minio" do |minio|
-    minio.vm.box = "bento/rockylinux-9"
-    minio.vm.box_version = "202502.21.0"
-    minio.vm.synced_folder '.', '/vagrant', disabled: true
+    minio.vm.box = "nibble/rocky-9"
     minio.vm.hostname = "minio"
     minio.vm.network :private_network, ip: "172.30.1.20"
     minio.vm.provision "shell", inline: <<-SHELL
       rm -rf /etc/ssh/ssh_host_*
       /usr/bin/ssh-keygen -A
+      mkdir -p /vagrant/.ssh ~vagrant/.ssh
+      chown vagrant: ~vagrant/.ssh
+      chmod 0700 ~vagrant/.ssh
+      [ -f /vagrant/.ssh/id_rsa ] || ssh-keygen -f /vagrant/.ssh/id_rsa -N ''
+      [ -f ~vagrant/.ssh/id_rsa ] || cp /vagrant/.ssh/id_rsa* ~vagrant/.ssh/
+      cp /vagrant/.ssh/id_rsa.pub ~vagrant/.ssh/authorized_keys
+      chmod 0600 ~vagrant/.ssh/authorized_keys
+      chown vagrant: ~vagrant/.ssh/authorized_keys
     SHELL
   end
 
   (1..3).each do |i|
     config.vm.define "db-#{i}" do |node|
-      node.vm.box = "bento/rockylinux-9"
-      node.vm.box_version = "202502.21.0"
-      node.vm.synced_folder '.', '/vagrant', disabled: true
+      node.vm.box = "nibble/rocky-9"
       node.vm.hostname = "db-#{i}"
       node.vm.network :private_network, ip: "172.30.1.#{i+30}"
       node.vm.provision "shell", inline: <<-SHELL
         rm -rf /etc/ssh/ssh_host_*
         /usr/bin/ssh-keygen -A
+        mkdir -p /vagrant/.ssh ~vagrant/.ssh
+        chown vagrant: ~vagrant/.ssh
+        chmod 0700 ~vagrant/.ssh
+        [ -f /vagrant/.ssh/id_rsa ] || ssh-keygen -f /vagrant/.ssh/id_rsa -N ''
+        [ -f ~vagrant/.ssh/id_rsa ] || cp /vagrant/.ssh/id_rsa* ~vagrant/.ssh/
+        cp /vagrant/.ssh/id_rsa.pub ~vagrant/.ssh/authorized_keys
+        chmod 0600 ~vagrant/.ssh/authorized_keys
+        chown vagrant: ~vagrant/.ssh/authorized_keys
       SHELL
     end
   end
-
-
 
   # Disable automatic box update checking. If you disable this, then
   # boxes will only be checked for updates when the user runs
