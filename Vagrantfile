@@ -35,6 +35,7 @@ Vagrant.configure("2") do |config|
     ansible.vm.network :private_network, ip: "172.30.1.10"
     ansible.vm.provision "shell", inline: <<-SHELL
       /vagrant/scripts/init_vm.sh
+      /vagrant/scripts/bootstrap_rocky-9.sh
     SHELL
   end
 
