@@ -34,16 +34,7 @@ Vagrant.configure("2") do |config|
     ansible.vm.hostname = "ansible"
     ansible.vm.network :private_network, ip: "172.30.1.10"
     ansible.vm.provision "shell", inline: <<-SHELL
-      rm -rf /etc/ssh/ssh_host_*
-      /usr/bin/ssh-keygen -A
-      mkdir -p /vagrant/.ssh ~vagrant/.ssh
-      chown vagrant: ~vagrant/.ssh
-      chmod 0700 ~vagrant/.ssh
-      [ -f /vagrant/.ssh/id_rsa ] || ssh-keygen -f /vagrant/.ssh/id_rsa -N ''
-      [ -f ~vagrant/.ssh/id_rsa ] || cp /vagrant/.ssh/id_rsa* ~vagrant/.ssh/
-      cp /vagrant/.ssh/id_rsa.pub ~vagrant/.ssh/authorized_keys
-      chmod 0600 ~vagrant/.ssh/authorized_keys
-      chown vagrant: ~vagrant/.ssh/authorized_keys
+      /vagrant/scripts/init_vm.sh
     SHELL
   end
 
@@ -52,16 +43,7 @@ Vagrant.configure("2") do |config|
     minio.vm.hostname = "minio"
     minio.vm.network :private_network, ip: "172.30.1.20"
     minio.vm.provision "shell", inline: <<-SHELL
-      rm -rf /etc/ssh/ssh_host_*
-      /usr/bin/ssh-keygen -A
-      mkdir -p /vagrant/.ssh ~vagrant/.ssh
-      chown vagrant: ~vagrant/.ssh
-      chmod 0700 ~vagrant/.ssh
-      [ -f /vagrant/.ssh/id_rsa ] || ssh-keygen -f /vagrant/.ssh/id_rsa -N ''
-      [ -f ~vagrant/.ssh/id_rsa ] || cp /vagrant/.ssh/id_rsa* ~vagrant/.ssh/
-      cp /vagrant/.ssh/id_rsa.pub ~vagrant/.ssh/authorized_keys
-      chmod 0600 ~vagrant/.ssh/authorized_keys
-      chown vagrant: ~vagrant/.ssh/authorized_keys
+      /vagrant/scripts/init_vm.sh
     SHELL
   end
 
@@ -71,16 +53,7 @@ Vagrant.configure("2") do |config|
       node.vm.hostname = "db-#{i}"
       node.vm.network :private_network, ip: "172.30.1.#{i+30}"
       node.vm.provision "shell", inline: <<-SHELL
-        rm -rf /etc/ssh/ssh_host_*
-        /usr/bin/ssh-keygen -A
-        mkdir -p /vagrant/.ssh ~vagrant/.ssh
-        chown vagrant: ~vagrant/.ssh
-        chmod 0700 ~vagrant/.ssh
-        [ -f /vagrant/.ssh/id_rsa ] || ssh-keygen -f /vagrant/.ssh/id_rsa -N ''
-        [ -f ~vagrant/.ssh/id_rsa ] || cp /vagrant/.ssh/id_rsa* ~vagrant/.ssh/
-        cp /vagrant/.ssh/id_rsa.pub ~vagrant/.ssh/authorized_keys
-        chmod 0600 ~vagrant/.ssh/authorized_keys
-        chown vagrant: ~vagrant/.ssh/authorized_keys
+        /vagrant/scripts/init_vm.sh
       SHELL
     end
   end
