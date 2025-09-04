@@ -10,7 +10,7 @@ fi
 
 echo Install rust
 if ! rustup update; then
-	cd "$(MKTEMP -d)"
+	cd "$(mktemp -d)"
 	curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs >sh.rustup.rs
 	bash ./sh.rustup.rs -y
 	export PATH=$HOME/.cargo/bin:$PATH
@@ -22,6 +22,7 @@ echo Install python3
 # For more info, see https://docs.ansible.com/ansible/latest/installation_guide/intro_installation.html
 sudo dnf install -y python3-pip libffi-devel
 pip3 install virtualenv
+. ~/.bashrc
 sudo update-alternatives --install /usr/bin/python python /usr/bin/python3 1
 if ! [ -e ~/venv ]; then
 	mkdir ~/venv
