@@ -31,7 +31,7 @@ Vagrant.configure("2") do |config|
 
   config.vm.define "ansible" do |ansible|
     ansible.vm.box = "nibble/rocky-9"
-    ansible.vm.hostname = "ansible"
+    ansible.vm.hostname = "ansible.local"
     ansible.vm.network :private_network, ip: "172.30.1.10"
     ansible.vm.provision "shell", inline: <<-SHELL
       /vagrant/scripts/init_vm.sh
@@ -41,7 +41,7 @@ Vagrant.configure("2") do |config|
 
   config.vm.define "minio" do |minio|
     minio.vm.box = "nibble/rocky-9"
-    minio.vm.hostname = "minio"
+    minio.vm.hostname = "minio.local"
     minio.vm.network :private_network, ip: "172.30.1.20"
     minio.vm.provision "shell", inline: <<-SHELL
       /vagrant/scripts/init_vm.sh
@@ -51,10 +51,11 @@ Vagrant.configure("2") do |config|
   (1..3).each do |i|
     config.vm.define "db-#{i}" do |node|
       node.vm.box = "nibble/rocky-9"
-      node.vm.hostname = "db-#{i}"
+      node.vm.hostname = "db-#{i}.local"
       node.vm.network :private_network, ip: "172.30.1.#{i+30}"
       node.vm.provision "shell", inline: <<-SHELL
         /vagrant/scripts/init_vm.sh
+        sudo mkdir -p /data/postgres/data /data/postgres/wal
       SHELL
     end
   end
