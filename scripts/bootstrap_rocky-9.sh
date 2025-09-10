@@ -8,13 +8,13 @@ if [ ! -d ~/git/pgvillage ]; then
 	mkdir -p ~/git && cd ~/git && git clone https://github.com/pgvillage/pgvillage && cd pgvillage && ln -s /vagrant/environments .
 fi
 
-echo Install rust
-if ! rustup update; then
-	cd "$(mktemp -d)"
-	curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs >sh.rustup.rs
-	bash ./sh.rustup.rs -y
-	export PATH=$HOME/.cargo/bin:$PATH
-fi
+#echo Install rust
+#if ! rustup update; then
+#	cd "$(mktemp -d)"
+#	curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs >sh.rustup.rs
+#	bash ./sh.rustup.rs -y
+#	export PATH=$HOME/.cargo/bin:$PATH
+#fi
 
 cd
 
