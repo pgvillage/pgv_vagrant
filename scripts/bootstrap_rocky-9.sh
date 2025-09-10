@@ -34,9 +34,6 @@ fi
 echo Install ansible
 pip3 install --upgrade pip ansible #--upgrade cryptography packaging netaddr msgraph-sdk
 
-echo Install chainsmith
-pip3 install --upgrade chainsmith
-
 echo Setup ssh localhost
 [ -f ~/.ssh/id_rsa.pub ] || ssh-keygen -q -f ~/.ssh/id_rsa -P ""
 grep -q "$USER@$HOSTNAME" ~/.ssh/authorized_keys || cat ~/.ssh/id_rsa.pub >>~/.ssh/authorized_keys
