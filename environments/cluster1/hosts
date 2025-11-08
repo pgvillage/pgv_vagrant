@@ -1,6 +1,9 @@
 ---
 all:
   children:
+    postgres:
+      children:
+        hacluster
     stolon:
       children:
         hacluster
