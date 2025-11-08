@@ -15,22 +15,23 @@ So you can use this to create a new box with all you need:
 
 1. Go to a new folder `cd $(mktemp -d)`
 2. Run `vagrant init bento/rockylinux-9` ; this will create a new vagrant vm from the latest bento/rockylinux-9 box
-3. Run `vagrant ssh` to enter the box
-4. In the box enter the following commands:
+3. Run `vagrant up` to enter the box
+4. Run `vagrant ssh` to enter the box
+5. In the box enter the following commands:
    ```bash
    sudo dnf update -y
    sudo dnf install epel-release -y
    sudo dnf install dkms gcc make kernel-devel bzip2 binutils patch libgomp glibc-headers glibc-devel -y
    ```
-5. Run `vagrant halt` to stop the vm
-6. In VirtualBox (gui) go to the VM, settings, storage and click the cdrom with the +, select VBoxGuestAdditions.iso, click Choose and click OK.
-7. Start the vm again `vagrant up`
-8. Run `vagrant ssh` to enter the vm again
-9. Mount the cdrom `sudo mount /dev/cdrom /mnt/`
-10. Run the installer `cd /mnt/ && sudo ./VBoxLinuxAdditions-arm64.run`
-11. (optionally) add your modifications to motd `sudo vim /etc/motd`
-12. Clean history `history -d`
-13. Best is to again start the vm, as virtual box will finish initialization of the guest additions. `vagrant halt && vagrant up`
-14. Stop the vm again `vagrant halt`
-15. Package the box `vagrant package --output "nibble-rocky-9.box"`
-16. Add the box to the local registry `vagrant box add nibble-rocky-9.box --name nibble/rocky-9`
+6. Run `vagrant halt` to stop the vm
+7. In VirtualBox (gui) go to the VM, settings, storage and click the cdrom with the +, select VBoxGuestAdditions.iso, click Choose and click OK.
+8. Start the vm again `vagrant up`
+9. Run `vagrant ssh` to enter the vm again
+10. Mount the cdrom `sudo mount /dev/cdrom /mnt/`
+11. Run the installer `cd /mnt/ && sudo ./VBoxLinuxAdditions-arm64.run`
+12. (optionally) add your modifications to motd `sudo vim /etc/motd`
+13. Clean history `history -cw`
+14. Best is to again start the vm, as virtual box will finish initialization of the guest additions. `vagrant halt && vagrant up`
+15. Stop the vm again `vagrant halt`
+16. Package the box `vagrant package --output "nibble-rocky-9.box"`
+17. Add the box to the local registry `vagrant box add nibble-rocky-9.box --name nibble/rocky-9`
