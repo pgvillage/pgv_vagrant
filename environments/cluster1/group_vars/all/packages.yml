@@ -12,6 +12,7 @@ linux_packages:
     - 'stolon'
     - 'wal-g-pg'
     - 'etcd'
+    - python3-psycopg2
   backup:
     - minio
   localhosts:

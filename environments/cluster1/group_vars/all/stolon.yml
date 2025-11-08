@@ -27,7 +27,3 @@ stolon_cert_managed: false
 #stolon_server_cert: "{{ certs.server[ansible_fqdn] }}"
 #stolon_server_key: "{{ private_keys.server[ansible_fqdn] }}"
 #stolon_server_chain: "{{ certs.server.chain }}"
-
-# We installeren stolon middels een rpm
-stolon_package_names:
-  - stolon
