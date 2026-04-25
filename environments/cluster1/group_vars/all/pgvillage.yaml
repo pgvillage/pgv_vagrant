@@ -41,3 +41,6 @@ stolon_pg_hba:
   - local all all ident
   - hostssl postgres avchecker samenet cert
   - hostssl all all samenet cert
+
+# We can use ansible to add entries to /etc/hosts
+linux_poor_mans_dns: false
