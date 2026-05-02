@@ -32,9 +32,10 @@ Vagrant.configure("2") do |config|
   config.vm.define "ansible" do |ansible|
     ansible.vm.box = "nibble/rocky-9"
     ansible.vm.hostname = "ansible.local"
-    ansible.vm.network :private_network, ip: "172.30.1.10"
+    ansible.vm.network :private_network, type: "dhcp", auto_config: false
     ansible.vm.provision "shell", inline: <<-SHELL
       /vagrant/scripts/init_vm.sh
+      sudo /vagrant/scripts/set_ip.sh 172.30.1.10
       sudo -u vagrant /vagrant/scripts/bootstrap_rocky-9.sh
     SHELL
   end
@@ -42,9 +43,10 @@ Vagrant.configure("2") do |config|
   config.vm.define "minio" do |minio|
     minio.vm.box = "nibble/rocky-9"
     minio.vm.hostname = "minio.local"
-    minio.vm.network :private_network, ip: "172.30.1.20"
+    minio.vm.network :private_network, type: "dhcp", auto_config: false
     minio.vm.provision "shell", inline: <<-SHELL
       /vagrant/scripts/init_vm.sh
+      sudo /vagrant/scripts/set_ip.sh 172.30.1.20
     SHELL
   end
 
@@ -52,9 +54,10 @@ Vagrant.configure("2") do |config|
     config.vm.define "db-#{i}" do |node|
       node.vm.box = "nibble/rocky-9"
       node.vm.hostname = "db-#{i}.local"
-      node.vm.network :private_network, ip: "172.30.1.#{i+30}"
+      node.vm.network :private_network, type: "dhcp", auto_config: false
       node.vm.provision "shell", inline: <<-SHELL
         /vagrant/scripts/init_vm.sh
+        sudo /vagrant/scripts/set_ip.sh 172.30.1.3#{i}
         sudo mkdir -p /data/postgres/data /data/postgres/wal
       SHELL
     end
