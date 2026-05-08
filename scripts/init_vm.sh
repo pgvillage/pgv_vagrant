@@ -15,3 +15,6 @@ grep -q ansible.local || echo '172.30.1.10 ansible ansible.local
 172.30.1.31 db-1.local db-1
 172.30.1.32 db-2.local db-2
 172.30.1.33 db-3.local db-3' >>/etc/hosts
+
+sudo sed -i 's/^makestep.*/makestep 1 -1/' /etc/chrony/chrony.conf
+sudo systemctl restart chrony
