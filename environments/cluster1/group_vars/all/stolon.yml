@@ -1,6 +1,9 @@
 ---
 
-stolon_pg_listen_address: "{{ ansible_eth1.ipv4.address }}"
+stolon_multicluster: true
+
+# stolon_pg_listen_address: "{{ ansible_default_ipv4.address}"
+stolon_pg_listen_address: "{{ ansible_facts.enp0s9.ipv4.address }}"
 
 stolon_cluster_name: "{{ cluster_name }}"
 stolon_pg_version: "{{ postgresql_version }}"
@@ -10,7 +13,6 @@ stolon_pg_certdir: "{{ server_cert_path }}"
 stolon_pg_bin_path: "{{ postgresql_bindir }}"
 stolon_wal_dir: "{{ postgresql_wal_mountpoint }}/stolon"
 stolon_pg_log_directory: "{{ postgresql_log_directory }}"
-# stolon_pg_listen_address: "{{ ansible_default_ipv4.address}"
 stolon_pg_port: "{{ postgresql_rw_port }}"
 stolon_proxy_port: "{{ postgresql_proxy_port }}"
 

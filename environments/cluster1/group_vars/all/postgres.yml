@@ -1,5 +1,5 @@
 ---
-postgresql_bindir: "/usr/pgsql-{{ stolon_pg_version }}/bin/"
+postgresql_bindir: "/usr/lib/postgresql/{{ stolon_pg_version }}/bin"
 postgresql_log_directory: /var/log/postgresql
 
 # /tmp is hardcoded by stolon. :(

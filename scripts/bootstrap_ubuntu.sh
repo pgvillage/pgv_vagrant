@@ -34,3 +34,6 @@ grep -q "$USER@$HOSTNAME" ~/.ssh/authorized_keys || cat ~/.ssh/id_rsa.pub >>~/.s
 ssh-keygen -H -F localhost >/dev/null || ssh-keyscan -H localhost >>~/.ssh/known_hosts
 
 which ansible-playbook >/dev/null || echo 'Please reload your profile to have ansible-playbook in your path (probably logout/login or `source ~/.bashrc`)'
+
+sudo sed -i 's/^makestep.*/makestep 1 -1/' /etc/chrony/chrony.conf
+sudo systemctl restart chrony
