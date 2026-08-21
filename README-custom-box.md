@@ -9,8 +9,8 @@ Is easy. Just install:
 
 ## Rocky Box
 
-There is no good box for VirtualBox/EL9/aarch64.
-Best I could find for rocky is bento/rockylinux-9, but it has no guest tools.
+We use `bento/rockylinux-9`, and use procedures below to install guest tools.
+
 So you can use this to create a new box with all you need:
 
 1. Go to a new folder `cd $(mktemp -d)`
@@ -64,3 +64,29 @@ We use bento/opensuse-leap016-0, and use procedures below to install guest tools
 13. Stop the vm again `vagrant halt`
 14. Package the box `vagrant package --output "nibble-suse-16.box"`
 15. Add the box to the local registry `vagrant box add nibble-suse-16.box --name nibble/suse-16`
+
+## Ubuntu Box
+
+We use `cloud-image/ubuntu-26.04`,  box version `20260421.0.0`, and use procedures below to install guest tools.
+
+1. Go to a new folder `cd $(mktemp -d)`
+2. Run `vagrant init cloud-image/ubuntu-26.04 --box-version 20260421.0.0` ; this will create a new vagrant vm from the latest ubuntu-26.04 box
+3. Run `vagrant up` to enter the box
+4. Run `vagrant ssh` to enter the box
+5. In the box enter the following commands:
+   ```bash
+   sudo apt-get update && sudo apt-get upgrade -y
+   ```
+6. Run `vagrant halt` to stop the vm
+7. In VirtualBox (gui) go to the VM, settings, storage and click the cdrom with the +, select VBoxGuestAdditions.iso, click Choose and click OK.
+8. Start the vm again `vagrant up`
+9. Run `vagrant ssh` to enter the vm again
+10. Mount the cdrom `sudo mount /dev/cdrom /mnt/`
+11. Run the installer `cd /mnt/ && sudo ./VBoxLinuxAdditions-arm64.run`
+12. (optionally) add your modifications to motd `sudo vim /etc/motd`
+13. Clean history `history -c && history -w`
+14. Best is to again start the vm, as virtual box will finish initialization of the guest additions. `vagrant reload`
+15. Stop the vm again `vagrant halt`
+16. Package the box `vagrant package --output "nibble-ubuntu.box"`
+17. Add the box to the local registry `vagrant box add nibble-ubuntu.box --name nibble/ubuntu-26.04`
+

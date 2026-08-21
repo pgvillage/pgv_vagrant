@@ -30,18 +30,18 @@ Vagrant.configure("2") do |config|
   #end
 
   config.vm.define "ansible" do |ansible|
-    ansible.vm.box = "nibble/rocky-9"
+    ansible.vm.box = "nibble/ubuntu-26.04"
     ansible.vm.hostname = "ansible.local"
     ansible.vm.network :private_network, type: "dhcp", auto_config: false
     ansible.vm.provision "shell", inline: <<-SHELL
       /vagrant/scripts/init_vm.sh
       sudo /vagrant/scripts/set_ip.sh 172.30.1.10
-      sudo -u vagrant /vagrant/scripts/bootstrap_rocky-9.sh
+      sudo -u vagrant /vagrant/scripts/bootstrap_ubuntu.sh
     SHELL
   end
 
   config.vm.define "minio" do |minio|
-    minio.vm.box = "nibble/rocky-9"
+    minio.vm.box = "nibble/ubuntu-26.04"
     minio.vm.hostname = "minio.local"
     minio.vm.network :private_network, type: "dhcp", auto_config: false
     minio.vm.provision "shell", inline: <<-SHELL
@@ -52,7 +52,7 @@ Vagrant.configure("2") do |config|
 
   (1..3).each do |i|
     config.vm.define "db-#{i}" do |node|
-      node.vm.box = "nibble/rocky-9"
+      node.vm.box = "nibble/ubuntu-26.04"
       node.vm.hostname = "db-#{i}.local"
       node.vm.network :private_network, type: "dhcp", auto_config: false
       node.vm.provision "shell", inline: <<-SHELL
