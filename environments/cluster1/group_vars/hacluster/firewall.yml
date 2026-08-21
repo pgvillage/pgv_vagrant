@@ -1,8 +1,9 @@
 ---
-
 firewall_type: firewalld
 firewall_ports:
-  postgres: 5432
-  stolon_proxy: 25432
+  cluster1: 5432
+  cluster1_proxy: 25432
+  cluster2: 5433
+  cluster2_proxy: 25433
   etcd_client: 2379
   etcd_server: 2380

@@ -31,3 +31,43 @@ stolon_proxy_listen_address: "{{ ansible_all_ipv4_addresses[1] }}"
 #stolon_server_cert: "{{ certs.server[ansible_fqdn] }}"
 #stolon_server_key: "{{ private_keys.server[ansible_fqdn] }}"
 #stolon_server_chain: "{{ certs.server.chain }}"
+
+stolon_default_cgroups:
+  CPUQuota: 100%
+  MemoryHigh: 8G
+
+stolon_clusters:
+  cluster1:
+    sysconfig:
+      stsentinel:
+        cluster_name: cluster1
+      stkeeper:
+        cluster_name: cluster1
+        pg_port: 5432
+        data_dir: "{{ postgresql_data_mountpoint }}/cluster1"
+        pgdata_dir: "{{ postgresql_data_mountpoint }}/cluster1/postgres"
+        wal_dir: "{{ stolon_wal_dir }}/cluster1"
+        pgwal_dir: "{{ stolon_wal_dir }}/cluster1"
+      stproxy:
+        cluster_name: cluster1
+        port: 25432
+    custom_config:
+      pgParameters:
+        log_directory: "{{ stolon_pg_log_directory }}/cluster1"
+  cluster2:
+    sysconfig:
+      stsentinel:
+        cluster_name: cluster2
+      stkeeper:
+        cluster_name: cluster2
+        pg_port: 5433
+        data_dir: "{{ postgresql_data_mountpoint }}/cluster2"
+        pgdata_dir: "{{ postgresql_data_mountpoint }}/cluster2/postgres"
+        wal_dir: "{{ stolon_wal_dir }}/cluster2"
+        pgwal_dir: "{{ stolon_wal_dir }}/cluster2"
+      stproxy:
+        cluster_name: cluster2
+        port: 25433
+    custom_config:
+      pgParameters:
+        log_directory: "{{ stolon_pg_log_directory }}/cluster2"
