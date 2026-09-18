@@ -2,6 +2,8 @@
 
 stolon_multicluster: true
 
+stolon_host_group: pgnodes
+
 # stolon_pg_listen_address: "{{ ansible_default_ipv4.address}"
 stolon_pg_listen_address: "{{ ansible_facts.enp0s9.ipv4.address }}"
 
@@ -17,8 +19,6 @@ stolon_pg_port: "{{ postgresql_rw_port }}"
 stolon_proxy_port: "{{ postgresql_proxy_port }}"
 
 stolon_extra_pg_parameters: "{{ walg_postgresql_parameters | combine(postgresql_log_parameters) | combine(postgresql_timeout_parameters) }}"
-
-stolon_wal_dir_mp: "{{ postgresql_wal_mountpoint }}"
 
 stolon_pg_cron_mailto: "{{ cron_mailto }}"
 
@@ -45,31 +45,33 @@ stolon_clusters:
         cluster_name: cluster1
       stkeeper:
         cluster_name: cluster1
-        pg_port: 5432
-        data_dir: "{{ postgresql_data_mountpoint }}/cluster1"
-        pgdata_dir: "{{ postgresql_data_mountpoint }}/cluster1/postgres"
-        wal_dir: "{{ stolon_wal_dir }}/cluster1"
-        pgwal_dir: "{{ stolon_wal_dir }}/cluster1"
+        pg_port: 5433
+        data_dir: "/mnt/data/cluster1"
+        pgdata_dir: "/mnt/data/cluster1/postgres"
+        wal_dir: "/mnt/wal/cluster1"
+        pgwal_dir: "/mnt/wal/cluster1"
       stproxy:
         cluster_name: cluster1
-        port: 25432
+        port: 25433
     custom_config:
       pgParameters:
         log_directory: "{{ stolon_pg_log_directory }}/cluster1"
+        archive_command: "/opt/wal-g/scripts/archive.sh cluster1 %p"
   cluster2:
     sysconfig:
       stsentinel:
         cluster_name: cluster2
       stkeeper:
         cluster_name: cluster2
-        pg_port: 5433
-        data_dir: "{{ postgresql_data_mountpoint }}/cluster2"
-        pgdata_dir: "{{ postgresql_data_mountpoint }}/cluster2/postgres"
-        wal_dir: "{{ stolon_wal_dir }}/cluster2"
-        pgwal_dir: "{{ stolon_wal_dir }}/cluster2"
+        pg_port: 5434
+        data_dir: "/mnt/data/cluster2"
+        pgdata_dir: "/mnt/data/cluster2/postgres"
+        wal_dir: "/mnt/wal/cluster2"
+        pgwal_dir: "/mnt/wal/cluster2"
       stproxy:
         cluster_name: cluster2
-        port: 25433
+        port: 25434
     custom_config:
       pgParameters:
         log_directory: "{{ stolon_pg_log_directory }}/cluster2"
+        archive_command: "/opt/wal-g/scripts/archive.sh cluster2 %p"

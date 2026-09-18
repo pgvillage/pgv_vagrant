@@ -1,16 +1,10 @@
 ---
 all:
   children:
-    postgres:
+    haproxy:
       children:
-        hacluster
-    stolon:
-      children:
-        hacluster
-    etcd_master:
-      children:
-        hacluster
-    hacluster:
+        pgnodes
+    pgnodes:
       hosts:
         db-1.local:
           ansible_host: 172.30.1.31
@@ -18,7 +12,7 @@ all:
           ansible_host: 172.30.1.32
         db-3.local:
           ansible_host: 172.30.1.33
-    backup:
+    minio:
       hosts:
         minio.local:
           ansible_host: 172.30.1.20

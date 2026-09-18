@@ -10,7 +10,6 @@ walg_backup_skip_window: 8
 walg_cron_mailto: "{{ cron_mailto }}"
 
 walg_postgresql_parameters:
-  archive_command: "/opt/wal-g/scripts/archive.sh %p"
   #can be used when we have configured buckets working with wal-g
   #restore_command: "/opt/wal-g/scripts/archive_restore.sh %f %p"
   archive_mode: "on"
@@ -26,7 +25,7 @@ walg_bucket_defaults:
   WALG_S3_PREFIX: "s3://{{ walg_bucket_name }}/{{ cluster_name }}"
   AWS_ACCESS_KEY_ID: "{{ minio_access_key }}"
   AWS_SECRET_ACCESS_KEY: "{{ minio_secret_key }}"
-  AWS_ENDPOINT: "https://{{ hostvars[groups['backup'][0]].ansible_fqdn }}"
+  AWS_ENDPOINT: "https://{{ hostvars[groups.minio[0]].ansible_fqdn }}"
   AWS_S3_FORCE_PATH_STYLE: true
   S3_CA_CERT_FILE: "{{ getent_passwd[walg_user][4] }}/.postgresql/root.crt"
 
@@ -35,8 +34,8 @@ walg_cert_files: {}
 
 walg_clusters:
   cluster1:
-    pg_datadir: "{{ postgresql_data_mountpoint }}/cluster1/postgres"
-    pg_port: 5432
+    pg_datadir: "/mnt/data/cluster1/postgres"
+    pg_port: 5433
     s3_prefix: "s3://cluster1"
     logfolder: "{{ walg_logfolder }}/cluster1/"
     cron:
@@ -44,8 +43,8 @@ walg_clusters:
       minute: "{{ walg_cron_minute }}"
       hour: "{{ walg_cron_hour }}"
   cluster2:
-    pg_datadir: "{{ postgresql_data_mountpoint }}/cluster2/postgres"
-    pg_port: 5433
+    pg_datadir: "/mnt/data/cluster2/postgres"
+    pg_port: 5434
     s3_prefix: "s3://cluster2"
     logfolder: "{{ walg_logfolder }}/cluster2/"
     cron:
