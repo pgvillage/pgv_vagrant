@@ -4,4 +4,5 @@ minio_cert_managed: false
 minio_access_key: "AWSKEY"
 minio_secret_key: "AWSSECRET"
 minio_buckets:
-  - "{{ bucket_name }}"
+  - cluster1
+  - cluster2

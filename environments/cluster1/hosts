@@ -1,13 +1,7 @@
 ---
 all:
   children:
-    postgres:
-      children:
-        hacluster
-    stolon:
-      children:
-        hacluster
-    etcd_master:
+    haproxy:
       children:
         hacluster
     hacluster:
