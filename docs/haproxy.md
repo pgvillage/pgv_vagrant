@@ -6,10 +6,10 @@ authors:
 date: 2026-10-11
 ---
 
-# HAProxy inventory (multi-instance)
+# HAProxy - multi-instance
 
-When deploying multiple HA clusters (e.a. stolon or Patroni), HAProxy needs to forward traffix for all options for all instances.
-You can configre them by editing the haproxy config (e.a. `environments/cluster1/group_vars/hacluster/haproxy.yml`) and define all front-ends and back-ends.
+When deploying multiple HA clusters (e.g. stolon or Patroni), HAProxy needs to forward traffic for all options for all instances.
+You can configure them by editing the haproxy config (e.g. `environments/cluster1/group_vars/all/haproxy.yml`) and define all front-ends and back-ends.
 Best is to define a global config first and define front-ends and backends from that.
 
 ## Generic settings
@@ -40,20 +40,19 @@ Helper dictionary that maps each route type to a backend port (on the database h
 
 | Route       | Backend                      | Health check                           |
 |-------------|------------------------------|----------------------------------------|
-| `ReadWrite` | Postgres port of the keeper  | `/opt/pgroute66/checkpgprimary.sh`      |
-| `ReadOnly`  | Postgres port of the keeper  | `/opt/pgroute66/checkpgstandby.sh`      |
-| `Proxy`     | stolon proxy port            | `/opt/pgroute66/checkpgprimary.sh`      |
+| `rw`        | Postgres port of the keeper  | `/opt/pgroute66/checkpgprimary.sh`      |
+| `ro`        | Postgres port of the keeper  | `/opt/pgroute66/checkpgstandby.sh`      |
+| `proxy`     | stolon proxy port            | `/opt/pgroute66/checkpgprimary.sh`      |
 
 !!! note
-    You can define other config and/or use other naming instead of ReadWrite, Proxy and ReadOnly.
+    You can define other config and/or use other naming instead of rw, proxy and ro.
 
 ## `haproxy_frontends`
 
 List of frontends. Each entry has `name`, `address`, `port`, `mode`, `backend` and `timeout_client`.
 
-The `name` is used to determine the cluster: the check script strips everything after the first dash. Frontend names
-must therefore follow the pattern `<cluster>-<Route>-frontend` (e.g. `cluster1-ReadWrite-frontend`), and `<cluster>`
-must match a key in [`pgroute66_clusters`](pgroute66.md).
+Frontend names follow the pattern `<cluster>-<Route>-frontend` (e.g. `cluster1-ReadWrite-frontend`) to keep them
+aligned with the backends.
 
 !!! example
     ```yaml
@@ -67,11 +66,18 @@ must match a key in [`pgroute66_clusters`](pgroute66.md).
     ```
 
 !!! note
-    Define a seperate frontend for every chapter defined for every cluster in `haproxy_config`
+    Define a separate frontend (and backend) for every route of every cluster in `haproxy_config`
 
 ## `haproxy_backends`
 
 List of backends, named `<cluster>-<Route>-backend`.
+
+The backend `name` determines the cluster: the check scripts use `HAPROXY_PROXY_NAME` (the backend name) and strip
+everything after the first dash to get the cluster name they query pgroute66 for. Therefore:
+
+- the backend name must start with `<cluster>-`, where `<cluster>` is a key in [`pgroute66_clusters`](pgroute66.md),
+  and the cluster name itself must not contain a dash;
+- the server `name` must equal the host name pgroute66 returns (the inventory hostname, e.g. `db-1.local`).
 
 | Key              | Description                                                                 |
 |------------------|-----------------------------------------------------------------------------|
@@ -97,7 +103,7 @@ List of backends, named `<cluster>-<Route>-backend`.
         servers:
           - name: "db-1.local"
             address: "172.30.1.31"
-            port: "{{ haproxy_config.rw.backend_port }}"
+            port: "{{ haproxy_config.cluster1.rw.backend_port }}"
             checkport: "{{ haproxy_checkport }}"
           # db-2.local, db-3.local ...
     ```

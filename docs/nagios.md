@@ -1,8 +1,14 @@
-# Nagios inventory
+---
+title: Nagios - multiinstance
+summary: Disabling the nagios role for multi-instance deployments
+authors:
+  - Sebas Mannem
+date: 2026-10-13
+---
 
-File: `environments/cluster1/group_vars/all/nagios.yml`
+# Nagios - multi-instance
 
-Changed in commit `8791986` (Multi instance changes).
+The nagios role can be disabled in the nagios config (e.g. `environments/cluster1/group_vars/all/nagios.yml`).
 
 ## `nagios_enabled`
 

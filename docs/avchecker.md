@@ -8,14 +8,14 @@ date: 2026-10-11
 
 # avchecker - multi-instance
 
-When deploting multiple HA clusters (e.a. stolon or Patroni), AVChecker can monitor all instances if you simply eefine them as seperaten instances of AVChecker.
-Edit the avchecker config (e.a. `environments/cluster1/group_vars/all/avchecker.yml`) and define all instances.
+When deploying multiple HA clusters (e.g. stolon or Patroni), AVChecker can monitor all instances if you simply define them as separate instances of AVChecker.
+Edit the avchecker config (e.g. `environments/cluster1/group_vars/all/avchecker.yml`) and define all instances.
 
 ## Example
 
 !!! example
     ```yaml
-    avchecker_sleeptime:
+    avchecker_sleeptime: 5
     avchecker_cluster_members: |
       {%- set nodes = [] -%}
       {%- for node in groups.hacluster -%}
@@ -35,20 +35,20 @@ Edit the avchecker config (e.a. `environments/cluster1/group_vars/all/avchecker.
         PGTARGETSESSIONATTRS: "{{ avchecker_rw_mode }}"
       cluster1-proxy:
         PGPORT: 25433
-        AVCHECKER_SLEEPTIME: 5
+        AVCHECKER_SLEEPTIME: "{{ avchecker_sleeptime }}"
         PGHOST: "{{ avchecker_cluster_members }}"
         PGDATABASE: "{{ avchecker_database }}"
         PGSSLMODE: "{{ avchecker_sslmode }}"
       cluster2-stolon:
         PGPORT: "5434"
-        AVCHECKER_SLEEPTIME: 5
+        AVCHECKER_SLEEPTIME: "{{ avchecker_sleeptime }}"
         PGHOST: "{{ avchecker_cluster_members }}"
         PGDATABASE: "{{ avchecker_database }}"
         PGSSLMODE: "{{ avchecker_sslmode }}"
         PGTARGETSESSIONATTRS: "{{ avchecker_rw_mode }}"
       cluster2-proxy:
         PGPORT: 25434
-        AVCHECKER_SLEEPTIME: 5
+        AVCHECKER_SLEEPTIME: "{{ avchecker_sleeptime }}"
         PGHOST: "{{ avchecker_cluster_members }}"
         PGDATABASE: "{{ avchecker_database }}"
         PGSSLMODE: "{{ avchecker_sslmode }}"

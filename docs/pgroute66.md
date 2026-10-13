@@ -6,26 +6,26 @@ authors:
 date: 2026-10-11
 ---
 
-# pgroute66 inventory (multi-instance)
+# pgroute66 - multi-instance
 
 Pgroute66 allows for defining clusters of instances, and as of release v0.8.28, we have an option to have one instance of pgroute66 manage multiple clusters.
-To define multiple clusters in pgroute66, you can configure `pgroute66_clusters` in your inventory (e.a. `environments/cluster1/group_vars/all/pgroute66.yml`).
+To define multiple clusters in pgroute66, you can configure `pgroute66_clusters` in your inventory (e.g. `environments/cluster1/group_vars/all/pgroute66.yml`).
 
-When properly defined, pgroute66 can be queried by haproxy with the scripts 
+When properly defined, pgroute66 can be queried by haproxy with the scripts
 - `checkpgprimary.sh` (to find the primary)
-- `checkpgstandby.sh` (to find the standby's)
+- `checkpgstandby.sh` (to find the standbys)
 
 See [haproxy.md](haproxy.md) for more info on configuring the scripts in the backends.
 
 ## Settings
 
-### defaults
+### Generic settings
 
-The pgroute66 role uses the following defaults:
+The pgroute66 role uses the following settings:
 
 | Variable                  | Description                                                                     |
 |---------------------------|---------------------------------------------------------------------------------|
-| `pgroute66_pgport`        | Default Postgres port (`5433`).                                                  |
+| `pgroute66_pgport`        | Default Postgres port (role default `5432`), used when a cluster does not set `pgport`. |
 | `pgroute66_pgnodes_group` | Inventory group that holds the database hosts (`hacluster`).                     |
 | `pgroute66_clusters`      | Dictionary with one entry per cluster; `pgport` is the Postgres port of that cluster. |
 | `pgroute66_config`        | Configuration file contents of pgroute66, generated from the settings above.     |
@@ -43,13 +43,13 @@ You can set cluster specific values in `pgroute66_clusters`.
         pgport: 5434
     ```
 
-!!! notes
-    The keys must match the keys in [`stolon_clusters`](stolon.md) and the `<cluster>` prefix of the HAProxy frontend names
+!!! note
+    The keys must match the keys in [`stolon_clusters`](stolon.md) and the `<cluster>` prefix of the HAProxy backend names.
     `pgport` must match `stolon_clusters.<cluster>.sysconfig.stkeeper.pg_port`.
 
 ## Resulting config on servers
 
-The Ansible role generates a yaml file with pgroute66 config wuth the following layout:
+The Ansible role generates a yaml file with pgroute66 config with the following layout:
 
 | Key         | Description                                                                      |
 |-------------|----------------------------------------------------------------------------------|

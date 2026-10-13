@@ -7,10 +7,10 @@ date: 2026-10-11
 ---
 
 
-# wal-g inventory (multi-instance)
+# wal-g - multi-instance
 
 The wal-g role can manage backups for multiple PostgreSQL instances by adding some configuration to the inventory
-(e.a. `environments/cluster1/group_vars/all/wal-g.yml`).
+(e.g. `environments/cluster1/group_vars/all/wal-g.yml`).
 
 ## `walg_clusters`
 
@@ -33,7 +33,7 @@ For every entry the role deploys a separate wal-g configuration, log folder and 
     walg_clusters:
       cluster1:
         pg_datadir: "{{ postgresql_data_mountpoint }}/cluster1/postgres"
-        pg_port: 5432
+        pg_port: 5433
         s3_prefix: "s3://cluster1"
         logfolder: "{{ walg_logfolder }}/cluster1/"
         cron:
@@ -42,7 +42,7 @@ For every entry the role deploys a separate wal-g configuration, log folder and 
           hour: "{{ walg_cron_hour }}"
       cluster2:
         pg_datadir: "{{ postgresql_data_mountpoint }}/cluster2/postgres"
-        pg_port: 5433
+        pg_port: 5434
         s3_prefix: "s3://cluster2"
         logfolder: "{{ walg_logfolder }}/cluster2/"
         cron:
@@ -52,9 +52,9 @@ For every entry the role deploys a separate wal-g configuration, log folder and 
     ```
 
 !!! note
-    Tip: you can stagger `cron.minute` / `cron.hour` per instance so backups of all instances on a host do not run at the same time.
+    You can stagger `cron.minute` / `cron.hour` per instance so backups of all instances on a host do not run at the same time.
 
 ## Related
 
-- Each stolon instance must archive through the instance aware archive script by setting a specific `archive_command`
+- Each stolon instance must archive through the instance aware archive script by setting a specific `archive_command`.
   See [stolon.md](stolon.md) for more info
